@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Portal</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+
+        .box {
+            width: 320px;
+            margin: 120px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px gray;
+            text-align: center;
+            display: none;
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 10px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body onload="checkPage()">
+
+<!-- LOGIN PAGE -->
+<div class="box" id="loginBox">
+    <h2>Student Login</h2>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+    <p id="error"></p>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div class="box" id="dashboardBox">
+    <h2>Student Dashboard</h2>
+    <p id="welcome"></p>
+
+    <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+    function login() {
+        let user = document.getElementById("username").value;
+        let pass = document.getElementById("password").value;
+
+        if (user === "student" && pass === "1234") {
+            sessionStorage.setItem("auth", "true");
+            sessionStorage.setItem("user", user);
+            showDashboard();
+        } else {
+            document.getElementById("error").innerText =
+                "Invalid Username or Password";
+        }
+    }
+
+    function checkPage() {
+        if (sessionStorage.getItem("auth") === "true") {
+            showDashboard();
+        } else {
+            showLogin();
+        }
+    }
+
+    function showDashboard() {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("dashboardBox").style.display = "block";
+        document.getElementById("welcome").innerText =
+            "Welcome, " + sessionStorage.getItem("user");
+    }
+
+    function showLogin() {
+        document.getElementById("dashboardBox").style.display = "none";
+        document.getElementById("loginBox").style.display = "block";
+    }
+
+    function logout() {
+        sessionStorage.clear();
+        showLogin();
+    }
+</script>
+
+</body>
+</html>
